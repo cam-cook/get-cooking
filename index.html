@@ -8,116 +8,130 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+/* Cookbook Pro tokens (from Figma: New Cookbook / Settings details) */
 :root{
-  --bg:#F4F4F4; --surface:#FFFFFF; --sunk:#F2F2F2; --sunk2:#E5E5E5;
-  --ink:#1E1E1E; --muted:#595959; --line:#D4D4D4; --line2:#8C8C8C;
-  --strong:#2B2B2B; --on-strong:#FFFFFF; --frame:#1E1E1E; --proto:#FFF7D6; --proto-line:#B08A00; --proto-ink:#4A3A00;
-  color-scheme: light;
-  box-sizing:border-box;
+  --font-sans:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --brand:#FF674C;
+  --primary:#00786F; --primary-foreground:#FAFAFA;
+  --foreground:#262626; --muted-foreground:#525252; --placeholder:#8A8A8A;
+  --background:#FFFFFF; --page-bg:#FFFDFB; --card:#FFFFFF;
+  --sidebar:#FDF9F5; --sidebar-accent:#F6EFE7; --sidebar-foreground:#525252; --sidebar-accent-foreground:#262626;
+  --accent:#F5F5F5; --muted-50:rgba(245,245,245,.5);
+  --border:#C9C9C9; --border-20:rgba(0,0,0,.2); --border-10:rgba(0,0,0,.1); --border-subtle:rgba(0,0,0,.05);
+  --input:#A3A3A3;
+  --destructive:#C10007;
+  --radius:12px; --radius-md:6px; --radius-sm:4px;
+  --shadow-2xs:0 2px 4px 0 rgba(161,161,161,.2);
+  --shadow-md:0 2px 4px -1px rgba(161,161,161,.2),0 2px 4px 0 rgba(161,161,161,.2);
+  --proto:#EEF7F6; --proto-line:#7FB8B2; --proto-ink:#0B4D47;
+  /* aliases used by shared screen markup */
+  --surface:var(--card); --sunk:var(--muted-50); --sunk2:var(--accent); --ink:var(--foreground); --muted:var(--muted-foreground); --line:var(--border-10); --line2:var(--input); --strong:var(--primary); --on-strong:var(--primary-foreground); --frame:var(--border-20);
+  color-scheme:light; box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
 }
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:#121212; --surface:#1C1C1C; --sunk:#262626; --sunk2:#333333;
-    --ink:#EDEDED; --muted:#B3B3B3; --line:#3A3A3A; --line2:#7A7A7A;
-    --strong:#EDEDED; --on-strong:#121212; --frame:#7A7A7A; --proto:#2E2A14; --proto-line:#8A7420; --proto-ink:#F0E2A8;
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"]{
-  --bg:#121212; --surface:#1C1C1C; --sunk:#262626; --sunk2:#333333;
-  --ink:#EDEDED; --muted:#B3B3B3; --line:#3A3A3A; --line2:#7A7A7A;
-  --strong:#EDEDED; --on-strong:#121212; --frame:#7A7A7A; --proto:#2E2A14; --proto-line:#8A7420; --proto-ink:#F0E2A8;
-  color-scheme: dark;
-}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *,*::before,*::after{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:15px;line-height:1.45}
+body{margin:0;background:var(--sidebar);color:var(--foreground);font-family:var(--font-sans);font-size:14px;line-height:20px;-webkit-font-smoothing:antialiased}
 button,input,textarea,select{font:inherit;color:inherit}
-a{color:var(--ink)}
-:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+a{color:var(--foreground)}
+:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(0,120,111,.35)}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+svg.lucide{width:16px;height:16px;stroke-width:1.33;flex:none}
 
 /* prototype bar */
-.proto{background:var(--proto);border-bottom:1px dashed var(--proto-line);color:var(--proto-ink);padding:10px 16px;display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;font-size:13px}
+.proto{background:var(--proto);border-bottom:1px dashed var(--proto-line);color:var(--proto-ink);padding:8px 16px;display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;font-size:12px;line-height:16px}
 .proto strong{font-weight:600}
 .proto label{display:flex;gap:6px;align-items:center}
-.proto select,.proto button{background:transparent;border:1px solid var(--proto-line);border-radius:6px;padding:5px 10px;color:var(--proto-ink);cursor:pointer;min-height:32px}
+.proto select,.proto button{background:#fff;border:1px solid var(--proto-line);border-radius:var(--radius-sm);height:28px;padding:0 10px;color:var(--proto-ink);cursor:pointer;font-size:12px}
 .proto .sp{flex:1}
 
 /* app shell */
-.app{display:flex;flex-wrap:wrap;min-height:calc(100vh - 54px)}
-.nav{flex:1 1 200px;max-width:240px;background:var(--surface);border-right:1px solid var(--line);padding:20px 12px;display:flex;flex-direction:column;gap:4px}
-.brandmark{font-weight:700;font-size:18px;padding:4px 10px 16px}
-.nav button{all:unset;cursor:pointer;padding:10px;border-radius:6px;font-size:14px;display:flex;justify-content:space-between;align-items:center;min-height:24px}
-.nav button[aria-current="page"]{background:var(--sunk);font-weight:600}
-.nav button:hover{background:var(--sunk)}
-.nav button:focus-visible{outline:2px solid var(--ink)}
-.main{flex:999 1 560px;min-width:0;padding:32px 24px 64px}
-.wrap{max-width:960px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
-@media (max-width:760px){.nav{max-width:none;flex-direction:row;flex-wrap:wrap;border-right:0;border-bottom:1px solid var(--line);padding:8px}.brandmark{width:100%;padding:4px 10px 6px}.main{padding:20px 14px 48px}}
+.app{display:flex;flex-wrap:wrap;min-height:calc(100vh - 45px)}
+.nav{flex:1 1 200px;max-width:248px;background:var(--sidebar);padding:16px 12px;display:flex;flex-direction:column;gap:2px}
+.brandmark{font-weight:700;font-size:22px;letter-spacing:-.5px;color:var(--brand);padding:2px 6px 14px}
+.navlabel{font-size:12px;line-height:16px;font-weight:500;color:var(--sidebar-foreground);padding:12px 8px 6px}
+.nav button{all:unset;cursor:pointer;height:32px;padding:0 8px;border-radius:var(--radius-md);font-size:14px;color:var(--sidebar-foreground);display:flex;gap:8px;align-items:center}
+.nav button .tag{margin-left:auto}
+.nav button[aria-current="page"]{background:var(--sidebar-accent);color:var(--sidebar-accent-foreground);font-weight:500}
+.nav button:hover{background:var(--sidebar-accent)}
+.nav button:focus-visible{box-shadow:0 0 0 3px rgba(0,120,111,.35)}
+.main{flex:999 1 560px;min-width:0;margin:8px 8px 8px 0;background:var(--page-bg);border:1px solid var(--border-10);border-radius:var(--radius);padding:20px 24px 64px}
+.wrap{max-width:672px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+.wrap.wide{max-width:880px}
+@media (max-width:760px){.nav{max-width:none;flex-direction:row;flex-wrap:wrap;padding:8px}.navlabel{display:none}.brandmark{width:100%;padding:2px 6px 6px}.main{margin:0 8px 8px}}
 
-/* primitives */
-h1{margin:0;font-size:28px;font-weight:600;line-height:1.2}
-h2{margin:0;font-size:18px;font-weight:600}
-h3{margin:0;font-size:15px;font-weight:600}
+/* type */
+h1{margin:0;font-size:24px;line-height:32px;font-weight:600;letter-spacing:-.6px}
+h2{margin:0;font-size:18px;line-height:28px;font-weight:500}
+h3{margin:0;font-size:14px;line-height:20px;font-weight:500}
 p{margin:0}
-.muted{color:var(--muted);font-size:13px}
-.crumb{color:var(--muted);font-size:13px}
-.crumb button{all:unset;cursor:pointer;text-decoration:underline}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:8px}
-.pad{padding:20px 24px}
+.muted{color:var(--muted-foreground);font-size:14px;line-height:20px}
+.crumb{color:var(--foreground);font-size:14px;display:flex;align-items:center;gap:4px}
+.crumb button{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:4px}
+.crumb button:hover{text-decoration:underline}
+
+/* surfaces */
+.card{background:var(--card);border:1px solid var(--border-20);border-radius:var(--radius);box-shadow:var(--shadow-2xs)}
+.pad{padding:20px 18px}
 .stack{display:flex;flex-direction:column;gap:12px}
 .row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
-.grow{flex:1 1 260px;min-width:0}
+.grow{flex:1 1 240px;min-width:0}
 .between{justify-content:space-between}
 .end{justify-content:flex-end}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:0 16px;border-radius:6px;border:1px solid var(--line2);background:var(--surface);cursor:pointer;font-size:14px;text-decoration:none;color:var(--ink)}
-.btn.pri{background:var(--strong);color:var(--on-strong);border-color:var(--strong);font-weight:500}
-.btn.sm{min-height:36px;padding:0 12px;font-size:13px}
-.btn[disabled]{opacity:.45;cursor:not-allowed}
-.pill{display:inline-flex;align-items:center;font-size:12px;padding:3px 10px;border-radius:999px;border:1px solid var(--line2);white-space:nowrap}
-.pill.dark{background:var(--strong);color:var(--on-strong);border-color:var(--strong)}
-.pill.dash{border-style:dashed}
-.list > *+*{border-top:1px solid var(--line)}
-.item{display:flex;flex-wrap:wrap;gap:14px;align-items:center;padding:16px 24px}
-.item.next{background:var(--sunk)}
-.num{width:28px;height:28px;border-radius:50%;border:1px solid var(--line2);display:flex;align-items:center;justify-content:center;font-size:13px;flex:none}
-.num.done{background:var(--strong);color:var(--on-strong);border-color:var(--strong)}
-.bar{height:8px;background:var(--sunk2);border-radius:4px;overflow:hidden;flex:0 1 280px;min-width:120px}
-.bar span{display:block;height:100%;background:var(--strong)}
+.list > *+*{border-top:1px solid var(--border-10)}
+.item{display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:14px 18px}
+.item.next{background:var(--muted-50)}
+.banner{border:1px solid var(--border-20);border-radius:var(--radius);padding:14px 18px;background:var(--card);box-shadow:var(--shadow-2xs);display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+
+/* controls */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:32px;padding:0 12px;border-radius:var(--radius-sm);border:1px solid var(--input);background:var(--background);cursor:pointer;font-size:14px;font-weight:500;line-height:1;text-decoration:none;color:var(--foreground);box-shadow:var(--shadow-2xs);white-space:nowrap}
+.btn:hover{background:var(--accent)}
+.btn.pri{background:var(--primary);color:var(--primary-foreground);border-color:var(--primary)}
+.btn.pri:hover{background:#00695F}
+.btn.sm{height:28px;padding:0 10px;font-size:13px}
+.btn[disabled]{opacity:.5;cursor:not-allowed;box-shadow:none}
+.pill{display:inline-flex;align-items:center;gap:4px;height:22px;font-size:12px;line-height:16px;font-weight:500;padding:0 8px;border-radius:var(--radius-md);border:1px solid var(--border);background:var(--background);color:var(--foreground);white-space:nowrap}
+.pill.dark{background:#E6F2F1;border-color:#B3D7D4;color:#00564F}
+.pill.dash{border-style:dashed;color:var(--muted-foreground)}
+.num{width:24px;height:24px;border-radius:999px;border:1px solid var(--input);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex:none;background:var(--background)}
+.num.done{background:var(--primary);color:var(--primary-foreground);border-color:var(--primary)}
+.bar{height:6px;background:var(--accent);border-radius:999px;overflow:hidden;flex:0 1 240px;min-width:120px;border:1px solid var(--border-10)}
+.bar span{display:block;height:100%;background:var(--primary)}
 .field{display:flex;flex-direction:column;gap:6px;flex:1 1 220px;min-width:0}
-.field label{font-size:13px;font-weight:500}
-.input{min-height:44px;padding:10px 12px;border:1px solid var(--line2);border-radius:6px;background:var(--surface);width:100%}
-textarea.input{min-height:120px;resize:vertical}
-.check{display:flex;gap:10px;align-items:flex-start;font-size:14px;cursor:pointer}
-.check input{width:20px;height:20px;margin:0;flex:none;accent-color:var(--strong)}
-.opt{flex:1 1 180px;display:flex;gap:10px;align-items:center;border:1px solid var(--line2);border-radius:6px;padding:12px;cursor:pointer;min-height:44px}
-.opt:has(input:checked){border:2px solid var(--ink);padding:11px}
-.opt input{accent-color:var(--strong);width:18px;height:18px;margin:0}
-.ph{background:var(--sunk2);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:12px;text-align:center}
-.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
-.tile{all:unset;cursor:pointer;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:6px}
-.tile:focus-visible{outline:2px solid var(--ink)}
-.tile .muted{font-size:12px}
-.banner{border:1px solid var(--line2);border-radius:8px;padding:16px 20px;background:var(--sunk);display:flex;flex-wrap:wrap;gap:12px;align-items:center}
-.vcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;padding:20px;z-index:20}
-.modal{background:var(--surface);border-radius:10px;max-width:600px;width:100%;max-height:90vh;overflow:auto;padding:28px;display:flex;flex-direction:column;gap:18px}
-.x{min-width:44px;min-height:44px;border:1px solid var(--line2);border-radius:6px;background:var(--surface);cursor:pointer}
-.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--strong);color:var(--on-strong);padding:12px 18px;border-radius:8px;font-size:14px;z-index:30;max-width:calc(100% - 32px)}
-.ext{border:2px dashed var(--line2);border-radius:10px;padding:28px;background:var(--surface);display:flex;flex-direction:column;gap:16px;max-width:520px;margin:40px auto}
-.shop{border:2px solid var(--frame);border-radius:8px;overflow:hidden;background:var(--surface)}
-.shop .hd{background:var(--sunk2);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-.done-mark{font-size:40px;line-height:1}
-.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.field label{font-size:14px;font-weight:500}
+.input{height:32px;padding:0 10px;border:1px solid var(--input);border-radius:var(--radius-sm);background:var(--background);width:100%;font-size:14px}
+.input::placeholder{color:var(--placeholder)}
+textarea.input{height:auto;min-height:96px;padding:8px 10px;resize:vertical}
+select.input{appearance:auto}
+.check{display:flex;gap:8px;align-items:flex-start;font-size:14px;font-weight:500;cursor:pointer}
+.check input{width:16px;height:16px;margin:2px 0 0;flex:none;accent-color:#262626}
+.opt{flex:1 1 180px;display:flex;gap:8px;align-items:center;border:1px solid var(--input);border-radius:var(--radius-md);padding:0 12px;height:40px;cursor:pointer;background:var(--background)}
+.opt:has(input:checked){border-color:var(--primary);box-shadow:0 0 0 1px var(--primary)}
+.opt input{accent-color:var(--primary);width:16px;height:16px;margin:0}
+.ph{background:var(--accent);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;color:var(--muted-foreground);font-size:12px;text-align:center}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px}
+.tile{all:unset;cursor:pointer;background:var(--card);border:1px solid var(--border-20);border-radius:var(--radius);box-shadow:var(--shadow-2xs);padding:14px;display:flex;flex-direction:column;gap:6px}
+.tile:hover{border-color:var(--input)}
+.tile:focus-visible{box-shadow:0 0 0 3px rgba(0,120,111,.35)}
+.tile .muted{font-size:12px;line-height:16px}
+.vcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+.overlay{position:fixed;inset:0;background:rgba(38,38,38,.5);display:flex;align-items:center;justify-content:center;padding:20px;z-index:20}
+.modal{background:var(--background);border-radius:var(--radius);box-shadow:var(--shadow-md);max-width:520px;width:100%;max-height:90vh;overflow:auto;padding:24px;display:flex;flex-direction:column;gap:16px}
+.modal h2{font-size:18px;line-height:28px;font-weight:600}
+.x{width:32px;height:32px;border:0;border-radius:var(--radius-sm);background:transparent;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+.x:hover{background:var(--accent)}
+.toast{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--background);color:var(--foreground);border:1px solid var(--border-20);box-shadow:var(--shadow-md);padding:12px 16px;border-radius:var(--radius-md);font-size:14px;font-weight:500;z-index:30;max-width:calc(100% - 32px)}
+.ext{border:1px dashed var(--input);border-radius:var(--radius);padding:24px;background:var(--background);display:flex;flex-direction:column;gap:16px;max-width:480px;margin:40px auto;box-shadow:var(--shadow-md)}
+.shop{border:1px solid var(--border-20);border-radius:var(--radius);overflow:hidden;background:var(--background);box-shadow:var(--shadow-2xs)}
+.shop .hd{background:var(--sidebar);padding:14px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--border-10)}
+.done-mark{width:40px;height:40px;border-radius:999px;background:#E6F2F1;color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:20px}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.344.0/dist/umd/lucide.min.js"></script>
 </head>
 <body>
 <div id="root"></div>
 <script>
 (function(){
-const KEY='get-cooking-proto-v1';
+const KEY='get-cooking-cookbook-v1';
 const fresh=()=>({
   screen:'signup', order:'admin', gov:false, welcomeSeen:false,
   first:'Sam', business:'Sam’s Kitchen', address:'12 Example St, Footscray VIC 3011', sameKitchen:true,
@@ -236,7 +250,7 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',
 const btn=(label,a,o={})=>`<button class="btn${o.pri?' pri':''}${o.sm?' sm':''}" data-a="${a}"${o.to?` data-to="${o.to}"`:''}${o.doc?` data-doc="${o.doc}"`:''}${o.dis?' disabled':''}>${label}</button>`;
 const goBtn=(label,to,o={})=>btn(label,'go',{...o,to});
 const pill=(t,dark,dash)=>`<span class="pill${dark?' dark':''}${dash?' dash':''}">${t}</span>`;
-const crumb=(label)=>`<div class="crumb"><button data-a="go" data-to="settings">Settings</button> / ${label}</div>`;
+const crumb=(label)=>`<div class="crumb"><button data-a="go" data-to="settings"><i data-lucide="chevron-left"></i>Settings</button></div>`;
 const backHome=()=>S.from==='menu'?goBtn('Back to menu','menu'):goBtn('Back to checklist','home');
 
 // ---- screens
@@ -292,7 +306,7 @@ function vHome(){
     <div class="list" style="border-top:1px solid var(--line)">${cook.map((r,i)=>`<div class="item${r[0]===nextKey?' next':''}"><div class="ph" style="width:96px;height:60px;flex:none">Video, ${r[7]}</div><div class="grow"><h3>${r[1]}</h3><p class="muted">${r[2]}</p></div>${pill(r[3],r[4])}${r[0]==='menu'?btn(r[4]?'Open menu':r[5],'menu-new',{pri:r[0]===nextKey}):goBtn(r[4]?'Edit':r[5],r[6],{pri:r[0]===nextKey})}</div>`).join('')}</div></section>`;
   const pct=Math.round(requiredDone()/4*100);
   const live=S.menu==='live';
-  return `<div class="wrap">
+  return `<div class="wrap wide">
     <div class="row between"><div class="stack" style="gap:6px"><h1>${live?'Kitchen open, '+esc(S.first):'Welcome to Cookaborough, '+esc(S.first)}</h1><p class="muted" style="font-size:15px">${live?'The first menu is live. Next: tell existing customers.':reqFirst?'Set up the business, then build the first menu. Progress saves automatically.':'Build the first menu now. Business details are only needed before publishing.'}</p></div>${btn('Book a call with Customer Success','nope')}</div>
     <div class="banner"><div class="grow stack" style="gap:2px"><strong>${requiredDone()} of 4 required steps complete</strong><span class="muted">${S.csNotified?'Customer Success has been notified and will be in touch to review the menu.':'Menus can be built at any time. Publishing opens once all required steps are complete.'}</span></div><div class="bar" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100" aria-label="Required steps"><span style="width:${pct}%"></span></div></div>
     ${reqFirst?reqHtml+cookHtml:cookHtml+reqHtml}
@@ -365,7 +379,7 @@ function vStripe(){
 }
 
 function vBrand(){
-  return `<div class="wrap">${crumb('Brand kit')}<div class="row between"><h1>Brand kit</h1>${pill(st.brand()?'Completed':'Required, '+brandCount()+' of 3',st.brand())}</div>
+  return `<div class="wrap wide">${crumb('Brand kit')}<div class="row between"><h1>Brand kit</h1>${pill(st.brand()?'Completed':'Required, '+brandCount()+' of 3',st.brand())}</div>
   <p class="muted" style="font-size:14px">Logos and colours used on the shopfront, customer emails and food labels.</p>
   <div class="row" style="align-items:flex-start;gap:24px">
    <div class="card pad stack grow" style="flex-basis:420px;gap:20px">
@@ -419,7 +433,7 @@ function vAbout(){
 
 function vMenu(){
   const b=blockers();
-  return `<div class="wrap"><div class="crumb">Menus / ${S.menu==='live'?'Live':'Draft'}</div>
+  return `<div class="wrap wide"><div class="crumb">Menus / ${S.menu==='live'?'Live':'Draft'}</div>
    <div class="row between"><div class="stack" style="gap:4px"><h1>First menu</h1><span class="muted">Opens [Monday] 9:00 am. Closes [Thursday] 9:00 am.</span></div>${pill(S.menu==='live'?'Live':'Draft',S.menu==='live')}</div>
    ${S.menu!=='live'&&b.length?`<div class="banner"><div class="grow"><strong>${b.length} item${b.length>1?'s':''} needed before this menu can publish</strong><p class="muted">${b.map(x=>x[0]).join(', ')}</p></div>${btn('See what’s needed','publish')}</div>`:''}
    <section class="card"><div class="pad row between"><h2>Recipes on this menu</h2>${btn('Add recipe','from-menu',{to:'recipe',sm:1})}</div>
@@ -429,13 +443,13 @@ function vMenu(){
 function vBlocked(){
   const b=blockers(), r=ready();
   return `<div class="overlay" role="dialog" aria-modal="true" aria-labelledby="bt"><div class="modal">
-   <div class="row between" style="align-items:flex-start;flex-wrap:nowrap"><div class="stack" style="gap:4px"><h2 id="bt" style="font-size:22px">Menu can’t be published yet</h2><p class="muted" style="font-size:14px">The menu is saved as a draft. ${b.length} item${b.length>1?'s':''} need${b.length>1?'':'s'} finishing first.</p></div><button class="x" data-a="close-modal" aria-label="Close">✕</button></div>
+   <div class="row between" style="align-items:flex-start;flex-wrap:nowrap"><div class="stack" style="gap:4px"><h2 id="bt" style="font-size:22px">Menu can’t be published yet</h2><p class="muted" style="font-size:14px">The menu is saved as a draft. ${b.length} item${b.length>1?'s':''} need${b.length>1?'':'s'} finishing first.</p></div><button class="x" data-a="close-modal" aria-label="Close"><i data-lucide="x"></i></button></div>
    <div class="card list">${b.map(x=>`<div class="item" style="padding:14px 16px"><div class="grow"><h3>${x[0]}</h3><p class="muted">${x[1]}</p></div>${btn(x[3],'from-menu',{to:x[2],sm:1})}</div>`).join('')}</div>
    ${r.length?`<div style="background:var(--sunk);border-radius:6px;padding:12px 14px"><strong style="font-size:13px">Ready</strong><p class="muted">${r.join(', ')}</p></div>`:''}
    <div class="row end">${btn('Keep as draft','close-modal')}${goBtn('Go to checklist','home',{pri:1})}</div></div></div>`;
 }
 function vPreview(){
-  return `<div class="wrap"><div class="row between"><div class="stack" style="gap:4px"><h1>Shopfront preview</h1><span class="muted">What customers see once the menu is published</span></div><div class="row">${goBtn('Back to menu','menu')}${btn('Publish menu','publish-confirm',{pri:1})}</div></div>
+  return `<div class="wrap wide"><div class="row between"><div class="stack" style="gap:4px"><h1>Shopfront preview</h1><span class="muted">What customers see once the menu is published</span></div><div class="row">${goBtn('Back to menu','menu')}${btn('Publish menu','publish-confirm',{pri:1})}</div></div>
    <div class="shop"><div class="hd"><strong>${esc(S.business)}</strong><span class="muted">Home, Menu, About</span></div>
     <div class="ph" style="height:160px;border-radius:0">Hero image</div>
     <div class="pad stack"><h2>This week’s menu</h2><div class="vcards">${Array.from({length:Math.max(S.recipes,1)},(_,i)=>`<div class="card"><div class="ph" style="height:100px;border-radius:8px 8px 0 0">Photo</div><div class="pad stack" style="gap:4px;padding:12px"><strong style="font-size:14px">${['Beef and red wine casserole','Chicken, leek and tarragon pie','Vegetable lasagne','Lentil and pumpkin soup'][i%4]}</strong><span class="muted">[Price]</span></div></div>`).join('')}</div>
@@ -449,7 +463,7 @@ function vLaunched(){
 }
 function vSettings(){
   const t=(title,desc,to,status,dark)=>`<button class="tile" data-a="${to?'go':'nope'}"${to?` data-to="${to}"`:''}>${status?pill(status,dark):''}<h3>${title}</h3><span class="muted">${desc}</span></button>`;
-  return `<div class="wrap"><h1>Settings</h1>
+  return `<div class="wrap wide"><h1>Settings</h1>
    <section class="banner" style="flex-direction:column;align-items:stretch"><div class="row between"><div><h2>Required to trade</h2><p class="muted">${requiredDone()} of 4 complete</p></div>${goBtn('View checklist on Home','home')}</div>
     <div class="tiles">${t('General details','ABN, addresses, contact details','general',S.general?'Completed':'Not started',S.general)}${t('Compliance','Documents and declaration','compliance',st.compliance()?(docsApproved()?'Approved':'In review'):complianceCount()+' of 5',st.compliance())}${t('Stripe payments','Online card payments','payments',S.stripe==='connected'?'Connected':'Not connected',S.stripe==='connected')}${t('Brand kit','Logos and colours','brand',st.brand()?'Completed':brandCount()+' of 3',st.brand())}</div></section>
    <h2>Delivery and pickup</h2><div class="tiles">${t('Delivery and pickup','Zones, schedules, pickup locations','fulfilment',S.fulfilment?'Set up':null)}${t('Closures and public holidays','Dates when fulfilment is unavailable')}${t('Checkout add-ons','Ice packs')}</div>
@@ -457,7 +471,7 @@ function vSettings(){
 }
 
 const VIEWS={signup:vSignup,home:vHome,general:vGeneral,compliance:vCompliance,payments:vPayments,stripe:vStripe,brand:vBrand,gov:vGov,recipe:vRecipe,fulfilment:vFulfil,about:vAbout,menu:vMenu,preview:vPreview,launched:vLaunched,settings:vSettings};
-const NAV=[['home','Home'],['menu','Menus'],['recipe','Recipes'],['about','Shopfront'],['settings','Settings']];
+const NAV=[['home','Home','home'],['menu','Menus','utensils'],['recipe','Recipes','chef-hat'],['about','Shopfront','store'],['settings','Settings','settings']];
 function navCurrent(){ const s=S.screen; if(['general','compliance','payments','brand','gov','fulfilment','settings'].includes(s)) return 'settings'; if(s==='preview'||s==='launched') return 'menu'; return s; }
 
 function render(){
@@ -470,13 +484,14 @@ function render(){
   if(S.screen==='signup'||S.screen==='stripe'){ body=`<main class="main">${VIEWS[S.screen]()}</main>`; }
   else {
     const cur=navCurrent();
-    body=`<div class="app"><nav class="nav" aria-label="Main"><div class="brandmark">Cookaborough</div>${NAV.map(([k,l])=>`<button ${k==='menu'?'data-a="menu-new"':'data-a="go" data-to="'+k+'"'}${cur===k?' aria-current="page"':''}>${l}${k==='home'&&requiredDone()<4?`<span class="pill" style="font-size:11px;padding:1px 7px">${requiredDone()}/4</span>`:''}</button>`).join('')}</nav><main class="main">${(VIEWS[S.screen]||vHome)()}</main></div>`;
+    body=`<div class="app"><nav class="nav" aria-label="Main"><div class="brandmark">Cookaborough</div>${NAV.map(([k,l,ic])=>`<button ${k==='menu'?'data-a="menu-new"':'data-a="go" data-to="'+k+'"'}${cur===k?' aria-current="page"':''}><i data-lucide="${ic}"></i>${l}${k==='home'&&requiredDone()<4?`<span class="pill tag">${requiredDone()}/4</span>`:''}</button>`).join('')}</nav><main class="main">${(VIEWS[S.screen]||vHome)()}</main></div>`;
   }
   let overlay='';
   if(S.screen==='home'&&!S.welcomeSeen) overlay=vWelcome();
   if(S.modal==='blocked') overlay=vBlocked();
   root.innerHTML=proto+body+overlay+(S.toast?`<div class="toast" role="status">${esc(S.toast)}</div>`:'');
   const m=root.querySelector('.modal button.btn.pri, .modal .x'); if(overlay&&m) m.focus();
+  if(window.lucide) lucide.createIcons();
   save();
 }
 render();

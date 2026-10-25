@@ -1,14 +1,14 @@
 # Get cooking: Cook onboarding prototype
 
-A clickable prototype of the refined Cook onboarding flow for Cookaborough, from sign-up to the first live menu. Greyscale wireframe style, so testing focuses on the flow rather than visuals.
+A clickable prototype of the refined Cook onboarding flow for Cookaborough, from sign-up to the first live menu. Styled with Cookbook Pro tokens (Figma file `3q43vMIfRF26jSITABVBzE`).
 
 ## Run it
 
 It's a single file with no build step. Open `index.html` in a browser.
 
-To share it with Cooks for testing, turn on GitHub Pages: **Settings › Pages › Deploy from a branch › main / root**. The prototype is then live at `https://cam-cook.github.io/get-cooking/`.
+Live on Vercel at `https://get-cooking-b9px.vercel.app`. Every commit to `main` redeploys automatically.
 
-Progress saves in the browser. Use **Reset to new Cook** in the yellow bar to start again.
+Progress saves in the browser. Use **Reset to new Cook** in the teal bar to start again.
 
 ## What's in the flow
 
@@ -24,7 +24,7 @@ Progress saves in the browser. Use **Reset to new Cook** in the yellow bar to st
 10. **Menu.** A draft banner listing what's still needed, a publish-blocked dialog with direct links, then a shopfront preview.
 11. **Launch.** Shopfront link, QR code and invite customers.
 
-## Prototype controls (yellow bar)
+## Prototype controls (teal bar)
 
 | Control | Use |
 |---|---|
